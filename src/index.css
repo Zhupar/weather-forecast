@@ -1,13 +1,104 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: Mohave, sans-serif;
+  src: url('./font/Mohave-Light.ttf');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ 
+.app {
+  background-color:  rgb(152, 231, 250);
+  background-image: linear-gradient(to bottom, rgba(246,205,139,0.2), rgba(0,0,255,0.5));
+  transition: 0.4s ease-out;
+  width: 100%;
+ 
+}
+
+.app.warm {
+  background-color: #f4ac84; 
+  
+  background-image: linear-gradient(to bottom, rgba(246,205,139,0.2), rgba(255,0,0,0.75));
+
+}
+main{
+  height: 100vh;  
+  padding: 25px;
+}
+
+.search-box {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.search-bar {
+  display: block;
+  width: 100%;
+  padding: 15px;
+
+  background: none;
+  border: none;
+  outline: none;
+
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 0 0 16px 16px;
+  margin-top: -25px;
+  box-shadow: 0px 5px rgba(0,0,0,0.2);
+
+  color: #313131;
+  font-size: 20px;
+  transition: 0.4s ease
+}
+
+.search-bar:focus {
+  background-color: rgba(255,255,255,0.75);
+}
+
+.location-box {
+  margin: 40px auto;
+  color: #fff;
+  text-align: center;
+}
+
+.location {  
+  
+  font-size: 32px;
+  font-weight: 500;  
+  text-shadow: 3px 3px rgba(50, 50, 70, 0.5)
+}
+
+.date {
+  font-style: italic;
+  font-size: 20px;
+  text-shadow: 2px 2px rgba(50, 50, 70, 0.5)
+}
+
+.weather-box {
+  text-align: center;
+  color: #fff;
+  text-align: center;
+}
+
+.temp {
+  position: relative;
+  display: inline-block;
+  margin: 30px auto;
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 16px;
+
+  padding: 15px 25px;
+  font-size: 102px;
+  font-weight: 900;
+  text-shadow: 3px 6px rgba(50, 50, 70, 0.5);
+  box-shadow: 3px 6px rgba(50, 50, 70, 0.2)
+
+}
+
+
+.weather {
+  font-size: 40px;
+  font-weight:700;
+  text-shadow: 3px 3px rgba(50, 50, 70, 0.5)
 }
