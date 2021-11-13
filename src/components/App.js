@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Daily from './Daily';
+import Hourly from './Hourly';
 import Button from 'react-bootstrap/Button';
 
 const api = {
@@ -8,13 +9,12 @@ const api = {
 }
 
 function App() {
-
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
   const [dWeather, setDWeather] = useState([]);
   const [hWeather, setHWeather] = useState([]);
 
-
+  
   const search = () =>{
     fetch(`${api.base}weather?q=${query}&appid=${api.key}`)
       .then(res=>res.json())
@@ -40,6 +40,7 @@ function App() {
         setDWeather(result.daily)
         setHWeather(result.hourly)
         
+        
         })
     } 
   
@@ -56,6 +57,23 @@ function App() {
 
     return `${day} ${date} ${month} ${year}`    
   }
+
+  const labels = (hWeather) =>{
+    let label = hWeather.map((val) => (new Date(val["dt"] * 1000)).getHours())
+    console.log(label)
+    return label
+  }
+
+ const data = (hWeather)=>{
+   let data = hWeather.map((val) => (Math.round(val["temp"]-273.15)))
+   console.log(data)
+   return data
+ }
+
+
+  
+
+
   const getUrl = (icon) => {
     return `http://openweathermap.org/img/wn/${icon}.png`
 
@@ -86,6 +104,7 @@ function App() {
               <div className="weather">{weather.weather[0].main}</div>
               <img width = "100px" height= "100px"src={getUrl(weather.weather[0].icon)}/>
             </div>
+            {(typeof hWeather != "undefined")? (<Hourly hourly={hWeather} labels={labels(hWeather)} data={data(hWeather)}/>):('')}
             <Daily daily = {dWeather} dateBuilder = {dateBuilder} getUrl={getUrl}/>
           
           </div>
