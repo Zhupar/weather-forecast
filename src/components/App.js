@@ -1,28 +1,47 @@
-import { getAllByPlaceholderText } from '@testing-library/dom';
 import React, { useState } from 'react';
+import Daily from './Daily';
+import Button from 'react-bootstrap/Button';
 
 const api = {
-  key: "0b31aba6b0abeddd543f59264664f3c3",
+  key: "206283e9a4feb2b6c7dbaef3a7133492",
   base: "https://api.openweathermap.org/data/2.5/"
 }
 
 function App() {
 
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
+  const [dWeather, setDWeather] = useState([]);
+  const [hWeather, setHWeather] = useState([]);
 
-  const search = evt => {
-    if(evt.key === "Enter"){
-      fetch(`${api.base}weather?q=${query}&appid=${api.key}`)
+
+  const search = () =>{
+    fetch(`${api.base}weather?q=${query}&appid=${api.key}`)
       .then(res=>res.json())
       .then(result=>{
       setWeather(result)
       setQuery('')
-      console.log(result)
-    console.log(typeof(result.main.temp))})
+      if(result != "undefined"){
+        searchDaily(result)
+      }      
+      })    
+  }
+  const searchCurrent = evt => {
+    if(evt.key === "Enter"){
+        search()
       } 
+    };
 
-    }
+    const searchDaily = (weather) => {    
+    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${weather.coord.lat}&lon=${weather.coord.lon}&exclude=alerts&appid=${api.key}`)
+    .then(res=>res.json())
+    .then(result=>{
+        console.log(result)
+        setDWeather(result.daily)
+        setHWeather(result.hourly)
+        
+        })
+    } 
   
 
   const dateBuilder =(d)=> {
@@ -35,7 +54,10 @@ function App() {
     let year = d.getFullYear();
     
 
-    return `${day} ${date} ${month} ${year}`
+    return `${day} ${date} ${month} ${year}`    
+  }
+  const getUrl = (icon) => {
+    return `http://openweathermap.org/img/wn/${icon}.png`
 
   }
 
@@ -48,8 +70,9 @@ function App() {
             placeholder="Search..."
             onChange={e=>setQuery(e.target.value)}
             value={query}
-            onKeyPress={search}
+            onKeyPress={searchCurrent}
           />
+          <button type="submit" onClick={search}>Search</button>
         </div>
         {(typeof weather.main != "undefined")? (
 
@@ -61,10 +84,14 @@ function App() {
             <div className = "weather-box">
               <div className ="temp">{Math.round((weather.main.temp)-273.15)}°C</div> 
               <div className="weather">{weather.weather[0].main}</div>
+              <img width = "100px" height= "100px"src={getUrl(weather.weather[0].icon)}/>
             </div>
+            <Daily daily = {dWeather} dateBuilder = {dateBuilder} getUrl={getUrl}/>
           
-          </div>          
+          </div>
+          
         ):('')}
+        
                 
       </main>
     </div>
