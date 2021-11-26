@@ -3,6 +3,7 @@ import Daily from './Daily';
 import Hourly from './Hourly';
 import Button from 'react-bootstrap/Button';
 
+// все функции и константы которые относятся к обращению к апи лучше вынести в отдельный файл в папку api
 const api = {
   key: "206283e9a4feb2b6c7dbaef3a7133492",
   base: "https://api.openweathermap.org/data/2.5/"
@@ -14,7 +15,7 @@ function App() {
   const [dWeather, setDWeather] = useState([]);
   const [hWeather, setHWeather] = useState([]);
 
-  
+
   const search = () =>{
     fetch(`${api.base}weather?q=${query}&appid=${api.key}`)
       .then(res=>res.json())
@@ -23,27 +24,27 @@ function App() {
       setQuery('')
       if(result != "undefined"){
         searchDaily(result)
-      }      
-      })    
+      }
+      })
   }
   const searchCurrent = evt => {
     if(evt.key === "Enter"){
         search()
-      } 
+      }
     };
 
-    const searchDaily = (weather) => {    
+    const searchDaily = (weather) => {
     fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${weather.coord.lat}&lon=${weather.coord.lon}&exclude=alerts&appid=${api.key}`)
     .then(res=>res.json())
     .then(result=>{
         console.log(result)
         setDWeather(result.daily)
         setHWeather(result.hourly)
-        
-        
+
+
         })
-    } 
-  
+    }
+
 
   const dateBuilder =(d)=> {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -53,9 +54,9 @@ function App() {
     let date = d.getDate();
     let month = months[d.getMonth()];
     let year = d.getFullYear();
-    
 
-    return `${day} ${date} ${month} ${year}`    
+
+    return `${day} ${date} ${month} ${year}`
   }
 
   const labels = (hWeather) =>{
@@ -71,7 +72,7 @@ function App() {
  }
 
 
-  
+
 
 
   const getUrl = (icon) => {
@@ -100,18 +101,18 @@ function App() {
               <div className="date">{ dateBuilder(new Date()) }</div>
             </div>
             <div className = "weather-box">
-              <div className ="temp">{Math.round((weather.main.temp)-273.15)}°C</div> 
+              <div className ="temp">{Math.round((weather.main.temp)-273.15)}°C</div>
               <div className="weather">{weather.weather[0].main}</div>
               <img width = "100px" height= "100px"src={getUrl(weather.weather[0].icon)}/>
             </div>
             {(typeof hWeather != "undefined")? (<Hourly hourly={hWeather} labels={labels(hWeather)} data={data(hWeather)}/>):('')}
             <Daily daily = {dWeather} dateBuilder = {dateBuilder} getUrl={getUrl}/>
-          
+
           </div>
-          
+
         ):('')}
-        
-                
+
+
       </main>
     </div>
   );

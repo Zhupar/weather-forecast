@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Line } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 
+// сейчас такой синтаксис почти не используется, чаще пишут на функциях компоненты
 class Hourly extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +32,7 @@ class Hourly extends React.Component {
           pointHitRadius: 10,
           data: this.props.data
         },
-        
+
       ]
     }
   };
